@@ -3,8 +3,6 @@ package pokemonai.tests.constants;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-
-import pokemonai.constants.MoveName;
 import pokemonai.constants.PokeType;
 import pokemonai.constants.TypeChart;
 
@@ -23,10 +21,5 @@ class TypeChartTest {
 	@Test
 	void shouldReturnImmune() {
 		assertEquals(TypeChart.getMultiplier(PokeType.POISON, PokeType.STEEL), 0);
-	}
-	
-	@Test
-	void enumTest() {
-		MoveName.ABSORB.implementation.;
 	}
 }
