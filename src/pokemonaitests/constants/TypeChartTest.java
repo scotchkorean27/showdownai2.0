@@ -1,4 +1,4 @@
-package pokemonai.tests.constants;
+package pokemonaitests.constants;
 
 import static org.junit.jupiter.api.Assertions.*;
 
