@@ -18,7 +18,9 @@ public class BuildPokemon {
 	public final UnmodifiableStatMap ivs;
 	public final UnmodifiableStatMap evs;
 	public final Optional<Integer> gender;
+	// public final UnmodifiableStatMap stats
 	
+	// Ability must also be sent in one day
 	public BuildPokemon(DexEntry dex, int level, MoveSet moveset, Nature nature, HashMap<Stat, Integer> ivs, HashMap<Stat, Integer> evs, Optional<Integer> gender) {
 		this.dexData = dex;
 		this.level = level;
@@ -27,5 +29,6 @@ public class BuildPokemon {
 		this.ivs = new UnmodifiableStatMap(ivs);
 		this.evs = new UnmodifiableStatMap(evs);
 		this.gender = gender;
+		
 	}
 }
