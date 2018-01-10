@@ -1,7 +1,7 @@
 package pokemonai.data.moves;
 
 public class Move {
-	public static int baseDamage() {
+	public int baseDamage() {
 		return 0;
 	}
 }

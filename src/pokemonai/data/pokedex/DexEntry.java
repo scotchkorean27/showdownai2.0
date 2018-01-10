@@ -1,6 +1,7 @@
 package pokemonai.data.pokedex;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -9,6 +10,7 @@ import org.json.simple.JSONObject;
 
 import pokemonai.constants.PokeType;
 import pokemonai.constants.Stat;
+import pokemonai.teambuild.UnmodifiableStatMap;
 
 public final class DexEntry {
 	
@@ -17,7 +19,7 @@ public final class DexEntry {
 	public final PokeType[] types;
 	// 0 MF, 1 M, 2 F, 3 N
 	public final int gender;
-	public final HashMap<Stat, Integer> baseStats;
+	public final UnmodifiableStatMap baseStats;
 	public final String[] abilities;
 	public final double height;
 	public final double weight;
@@ -48,12 +50,13 @@ public final class DexEntry {
 		else {
 			this.gender = 0;
 		}
-		this.baseStats = new HashMap<>();
+		HashMap<Stat, Integer> statMap = new HashMap<>();
 		JSONObject baseStats = (JSONObject) dexJSON.get("baseStats");
 		for (Object s : baseStats.keySet()) {
 			String statname = ((String) s).toUpperCase();
-			this.baseStats.put(Stat.valueOf(statname), ((Long) baseStats.get(s)).intValue());
+			statMap.put(Stat.valueOf(statname), ((Long) baseStats.get(s)).intValue());
 		}
+		this.baseStats = new UnmodifiableStatMap(statMap);
 		Object[] abilities = ((JSONObject) dexJSON.get("abilities")).values().toArray();
 		this.abilities = Arrays.copyOf(abilities, abilities.length, String[].class);
 		this.height = ((Number) dexJSON.get("heightm")).doubleValue();
