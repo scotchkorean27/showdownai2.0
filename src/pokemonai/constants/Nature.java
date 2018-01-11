@@ -38,11 +38,11 @@ public enum Nature {
 		this.down = down;
 	}
 	
-	Optional<Stat> getUp() {
+	public Optional<Stat> getUp() {
 		return this.up;
 	}
 	
-	Optional<Stat> getDown() {
+	public Optional<Stat> getDown() {
 		return this.down;
 	}
 }

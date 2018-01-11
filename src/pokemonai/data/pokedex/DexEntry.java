@@ -1,9 +1,7 @@
 package pokemonai.data.pokedex;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -24,6 +22,7 @@ public final class DexEntry {
 	public final double height;
 	public final double weight;
 	
+	// TODO: Add a provision for maxHP (Shedinja)
 	public DexEntry(JSONObject dexJSON) {
 		this.num = ((Long)dexJSON.get("num")).intValue();
 		this.species = (String) dexJSON.get("species");

@@ -1,9 +1,6 @@
-package pokemonai.constants;
+package pokemonai.data.moves;
 
 import java.util.HashMap;
-
-import pokemonai.data.moves.Absorb;
-import pokemonai.data.moves.Move;
 
 public class MasterMoveMap {
 	private static final HashMap<String, Move> masterMoveMap;

@@ -2,18 +2,12 @@ package pokemonaitests.data.pokedex;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.HashSet;
-
 import org.junit.jupiter.api.Test;
 
 import pokemonai.constants.PokeType;
 import pokemonai.constants.Stat;
-import pokemonai.constants.TypeChart;
-import pokemonai.data.moves.Move;
 import pokemonai.data.pokedex.DexEntry;
-import pokemonai.data.pokedex.MoveSet;
 import pokemonai.data.pokedex.Pokedex;
-import pokemonai.teambuild.UnmodifiableMoveSet;
 
 class PokedexTest {
 
