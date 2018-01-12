@@ -61,11 +61,28 @@ class GameTest {
 	
 	@Test
 	void shouldApplyTypeBonusCorrectly() {
-		
+		BuildPokemon alakazambuild = new BuildPokemon(Pokedex.getDexEntry("alakazam"), 100, new MoveSet(), Nature.DOCILE, new HashMap<>(), new HashMap<>(), Optional.empty());
+		// 105 ATK 275 SPA
+		BattlePokemon alakazambattle = new BattlePokemon(alakazambuild);
+		BuildPokemon bastiodonbuild = new BuildPokemon(Pokedex.getDexEntry("bastiodon"), 100, new MoveSet(), Nature.DOCILE, new HashMap<>(), new HashMap<>(), Optional.empty());
+		// 341 DEF 281 SPD
+		BattlePokemon bastiodonbattle = new BattlePokemon(bastiodonbuild);
+		assertEquals((int) new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.WATER, MoveCategory.SPECIAL), false, new DeterministicRandom()), 150);
+		assertEquals((int) new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.GROUND, MoveCategory.SPECIAL), false, new DeterministicRandom()), 300);
+		assertEquals((int) new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.BUG, MoveCategory.SPECIAL), false, new DeterministicRandom()), 37);
+		assertEquals((int) new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.NORMAL, MoveCategory.SPECIAL), false, new DeterministicRandom()), 18);
 	}
 	
 	@Test
 	void shouldApplySTABCorrectly() {
-		
+		BuildPokemon alakazambuild = new BuildPokemon(Pokedex.getDexEntry("magnezone"), 100, new MoveSet(), Nature.DOCILE, new HashMap<>(), new HashMap<>(), Optional.empty());
+		// 145 ATK 265 SPA
+		BattlePokemon alakazambattle = new BattlePokemon(alakazambuild);
+		BuildPokemon bastiodonbuild = new BuildPokemon(Pokedex.getDexEntry("bastiodon"), 100, new MoveSet(), Nature.DOCILE, new HashMap<>(), new HashMap<>(), Optional.empty());
+		// 341 DEF 281 SPD
+		BattlePokemon bastiodonbattle = new BattlePokemon(bastiodonbuild);
+		assertEquals((int) new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.ELECTRIC, MoveCategory.SPECIAL), false, new DeterministicRandom()), 109);
 	}
+	
+	
 }
