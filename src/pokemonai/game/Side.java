@@ -6,7 +6,7 @@ import java.util.HashMap;
 import pokemonai.constants.Stat;
 
 public class Side {
-	ArrayList<Pokemon> team = new ArrayList();
+	ArrayList<BattlePokemon> team = new ArrayList();
 
 	
 	public Side() {

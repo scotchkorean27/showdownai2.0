@@ -7,7 +7,7 @@ public class MasterMoveMap {
 	
 	static {
 		masterMoveMap = new HashMap<String, Move>();
-		masterMoveMap.put("absorb", new Absorb());
+		masterMoveMap.put("tackle", new Tackle());
 	}
 	
 	public static Move getMove(String movename) {
