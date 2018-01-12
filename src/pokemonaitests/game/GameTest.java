@@ -75,13 +75,13 @@ class GameTest {
 	
 	@Test
 	void shouldApplySTABCorrectly() {
-		BuildPokemon alakazambuild = new BuildPokemon(Pokedex.getDexEntry("magnezone"), 100, new MoveSet(), Nature.DOCILE, new HashMap<>(), new HashMap<>(), Optional.empty());
+		BuildPokemon magnezonebuild = new BuildPokemon(Pokedex.getDexEntry("magnezone"), 100, new MoveSet(), Nature.DOCILE, new HashMap<>(), new HashMap<>(), Optional.empty());
 		// 145 ATK 265 SPA
-		BattlePokemon alakazambattle = new BattlePokemon(alakazambuild);
+		BattlePokemon magnezonebattle = new BattlePokemon(magnezonebuild);
 		BuildPokemon bastiodonbuild = new BuildPokemon(Pokedex.getDexEntry("bastiodon"), 100, new MoveSet(), Nature.DOCILE, new HashMap<>(), new HashMap<>(), Optional.empty());
 		// 341 DEF 281 SPD
 		BattlePokemon bastiodonbattle = new BattlePokemon(bastiodonbuild);
-		assertEquals((int) new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.ELECTRIC, MoveCategory.SPECIAL), false, new DeterministicRandom()), 109);
+		assertEquals((int) new Game().getModifiedDamage(magnezonebattle, bastiodonbattle, new Generic90Move(PokeType.ELECTRIC, MoveCategory.SPECIAL), false, new DeterministicRandom()), 109);
 	}
 	
 	
