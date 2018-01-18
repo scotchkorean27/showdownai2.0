@@ -26,10 +26,10 @@ class GameTest {
 	void shouldCalculateBaseDamageCorrectly() {
 		BuildPokemon alakazambuild = new BuildPokemon(Pokedex.getDexEntry("alakazam"), 100, new MoveSet(), Nature.DOCILE, new HashMap<>(), new HashMap<>(), Optional.empty());
 		// 105 ATK 275 SPA
-		BattlePokemon alakazambattle = new BattlePokemon(alakazambuild);
+		BattlePokemon alakazambattle = new BattlePokemon(alakazambuild, 0);
 		BuildPokemon bastiodonbuild = new BuildPokemon(Pokedex.getDexEntry("bastiodon"), 100, new MoveSet(), Nature.DOCILE, new HashMap<>(), new HashMap<>(), Optional.empty());
 		// 341 DEF 281 SPD
-		BattlePokemon bastiodonbattle = new BattlePokemon(bastiodonbuild);
+		BattlePokemon bastiodonbattle = new BattlePokemon(bastiodonbuild, 1);
 		assertEquals((int) new Game().getBaseDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.ELECTRIC, MoveCategory.SPECIAL), false), 75);
 		alakazambattle.boost(Stat.SPA, 2);
 		assertEquals((int) new Game().getBaseDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.ELECTRIC, MoveCategory.SPECIAL), false), 149);
@@ -48,40 +48,40 @@ class GameTest {
 	void shouldProcessCritModifiersCorrectly() {
 		BuildPokemon alakazambuild = new BuildPokemon(Pokedex.getDexEntry("alakazam"), 100, new MoveSet(), Nature.DOCILE, new HashMap<>(), new HashMap<>(), Optional.empty());
 		// 105 ATK 275 SPA
-		BattlePokemon alakazambattle = new BattlePokemon(alakazambuild);
+		BattlePokemon alakazambattle = new BattlePokemon(alakazambuild, 0);
 		BuildPokemon bastiodonbuild = new BuildPokemon(Pokedex.getDexEntry("bastiodon"), 100, new MoveSet(), Nature.DOCILE, new HashMap<>(), new HashMap<>(), Optional.empty());
 		// 341 DEF 281 SPD
-		BattlePokemon bastiodonbattle = new BattlePokemon(bastiodonbuild);
-		assertEquals((int) new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.ELECTRIC, MoveCategory.SPECIAL), true, new DeterministicRandom()), 112);
+		BattlePokemon bastiodonbattle = new BattlePokemon(bastiodonbuild, 1);
+		assertEquals(new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.ELECTRIC, MoveCategory.SPECIAL), true, new DeterministicRandom()).damage, 112);
 		alakazambattle.unboost(Stat.SPA, 4);
-		assertEquals((int) new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.ELECTRIC, MoveCategory.SPECIAL), true, new DeterministicRandom()), 112);
+		assertEquals(new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.ELECTRIC, MoveCategory.SPECIAL), true, new DeterministicRandom()).damage, 112);
 		bastiodonbattle.boost(Stat.SPD, 4);
-		assertEquals((int) new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.ELECTRIC, MoveCategory.SPECIAL), true, new DeterministicRandom()), 112);
+		assertEquals(new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.ELECTRIC, MoveCategory.SPECIAL), true, new DeterministicRandom()).damage, 112);
 	}
 	
 	@Test
 	void shouldApplyTypeBonusCorrectly() {
 		BuildPokemon alakazambuild = new BuildPokemon(Pokedex.getDexEntry("alakazam"), 100, new MoveSet(), Nature.DOCILE, new HashMap<>(), new HashMap<>(), Optional.empty());
 		// 105 ATK 275 SPA
-		BattlePokemon alakazambattle = new BattlePokemon(alakazambuild);
+		BattlePokemon alakazambattle = new BattlePokemon(alakazambuild, 0);
 		BuildPokemon bastiodonbuild = new BuildPokemon(Pokedex.getDexEntry("bastiodon"), 100, new MoveSet(), Nature.DOCILE, new HashMap<>(), new HashMap<>(), Optional.empty());
 		// 341 DEF 281 SPD
-		BattlePokemon bastiodonbattle = new BattlePokemon(bastiodonbuild);
-		assertEquals((int) new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.WATER, MoveCategory.SPECIAL), false, new DeterministicRandom()), 150);
-		assertEquals((int) new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.GROUND, MoveCategory.SPECIAL), false, new DeterministicRandom()), 300);
-		assertEquals((int) new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.BUG, MoveCategory.SPECIAL), false, new DeterministicRandom()), 37);
-		assertEquals((int) new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.NORMAL, MoveCategory.SPECIAL), false, new DeterministicRandom()), 18);
+		BattlePokemon bastiodonbattle = new BattlePokemon(bastiodonbuild, 1);
+		assertEquals(new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.WATER, MoveCategory.SPECIAL), false, new DeterministicRandom()).damage, 150);
+		assertEquals(new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.GROUND, MoveCategory.SPECIAL), false, new DeterministicRandom()).damage, 300);
+		assertEquals(new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.BUG, MoveCategory.SPECIAL), false, new DeterministicRandom()).damage, 37);
+		assertEquals(new Game().getModifiedDamage(alakazambattle, bastiodonbattle, new Generic90Move(PokeType.NORMAL, MoveCategory.SPECIAL), false, new DeterministicRandom()).damage, 18);
 	}
 	
 	@Test
 	void shouldApplySTABCorrectly() {
 		BuildPokemon magnezonebuild = new BuildPokemon(Pokedex.getDexEntry("magnezone"), 100, new MoveSet(), Nature.DOCILE, new HashMap<>(), new HashMap<>(), Optional.empty());
 		// 145 ATK 265 SPA
-		BattlePokemon magnezonebattle = new BattlePokemon(magnezonebuild);
+		BattlePokemon magnezonebattle = new BattlePokemon(magnezonebuild, 0);
 		BuildPokemon bastiodonbuild = new BuildPokemon(Pokedex.getDexEntry("bastiodon"), 100, new MoveSet(), Nature.DOCILE, new HashMap<>(), new HashMap<>(), Optional.empty());
 		// 341 DEF 281 SPD
-		BattlePokemon bastiodonbattle = new BattlePokemon(bastiodonbuild);
-		assertEquals((int) new Game().getModifiedDamage(magnezonebattle, bastiodonbattle, new Generic90Move(PokeType.ELECTRIC, MoveCategory.SPECIAL), false, new DeterministicRandom()), 109);
+		BattlePokemon bastiodonbattle = new BattlePokemon(bastiodonbuild, 1);
+		assertEquals(new Game().getModifiedDamage(magnezonebattle, bastiodonbattle, new Generic90Move(PokeType.ELECTRIC, MoveCategory.SPECIAL), false, new DeterministicRandom()).damage, 109);
 	}
 	
 	

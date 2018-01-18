@@ -7,14 +7,25 @@ import pokemonai.constants.Stat;
 import pokemonai.teambuild.BuildPokemon;
 
 public class BattlePokemon {
-	BuildPokemon basePokemon;
-	HashMap<Stat, Integer> boosts = new HashMap<>();
-	HashMap<BattleStat, Integer> secondaryBoosts = new HashMap<>();
-	int hp;
+	public BuildPokemon basePokemon;
+	public HashMap<Stat, Integer> boosts = new HashMap<>();
+	public HashMap<BattleStat, Integer> secondaryBoosts = new HashMap<>();
+	public int hp;
+	public final int side;
+	public final int id;
 	
-	public BattlePokemon(BuildPokemon basePokemon) {
+	public BattlePokemon(BuildPokemon basePokemon, int side) {
 		this.basePokemon = basePokemon;
 		this.hp = this.basePokemon.getStat(Stat.HP);
+		this.id = 0;
+		this.side = side;
+	}
+	
+	public BattlePokemon(BuildPokemon basePokemon, int id, int side) {
+		this.basePokemon = basePokemon;
+		this.hp = this.basePokemon.getStat(Stat.HP);
+		this.id = id;
+		this.side = side;
 	}
 	
 	public double getStatMult(Stat stat) {
@@ -33,16 +44,34 @@ public class BattlePokemon {
 	}
 	
 	public double getStatMult(BattleStat stat) {
-		if (!this.secondaryBoosts.containsKey(stat)) {
-			return 1;
-		}
-		else {
-			double coeffvar = Math.abs(this.secondaryBoosts.get(stat)) + 3;
-			if (this.secondaryBoosts.get(stat) > 0) {
-				return coeffvar / 3;
+		if (stat.equals(BattleStat.CRITICALHIT)) {
+			if (!this.secondaryBoosts.containsKey(BattleStat.CRITICALHIT) || this.secondaryBoosts.get(BattleStat.CRITICALHIT) <= 0) {
+				return (double) 1 / 24;
 			}
 			else {
-				return 3 / coeffvar;
+				if (this.secondaryBoosts.get(BattleStat.CRITICALHIT) == 1) {
+					return (double) 1 / 8;
+				}
+				else if(this.secondaryBoosts.get(BattleStat.CRITICALHIT) == 2) {
+					return (double) 1 / 2;
+				}
+				else {
+					return 1;
+				}
+			}
+		}
+		else {
+			if (!this.secondaryBoosts.containsKey(stat)) {
+				return 1;
+			}
+			else {
+				double coeffvar = Math.abs(this.secondaryBoosts.get(stat)) + 3;
+				if (this.secondaryBoosts.get(stat) > 0) {
+					return coeffvar / 3;
+				}
+				else {
+					return 3 / coeffvar;
+				}
 			}
 		}
 	}
