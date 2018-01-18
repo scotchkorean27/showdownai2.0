@@ -15,11 +15,11 @@ import pokemonai.data.pokedex.MoveSet;
 public class UnmodifiableMoveSet implements Set<Move> {
 
 	private final Set<Move> moveset;
-	
+
 	public UnmodifiableMoveSet(MoveSet moveset) {
 		this.moveset = Collections.unmodifiableSet(new HashSet<>(moveset));
 	}
-	
+
 	@Override
 	public boolean add(Move e) {
 		return this.moveset.add(e);

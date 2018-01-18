@@ -4,10 +4,10 @@ import pokemonai.constants.MoveCategory;
 import pokemonai.constants.PokeType;
 
 public class Generic90Move extends Move {
-	
+
 	private final PokeType type;
 	private final MoveCategory category;
-	
+
 	public Generic90Move(PokeType type, MoveCategory category) {
 		this.type = type;
 		this.category = category;

@@ -16,7 +16,7 @@ class PokedexTest {
 		DexEntry magneton = Pokedex.getDexEntry("magneton");
 		assertEquals(magneton.num, 82);
 		assertEquals(magneton.species, "Magneton");
-		assertArrayEquals(magneton.types, new PokeType[] {PokeType.ELECTRIC, PokeType.STEEL});
+		assertArrayEquals(magneton.types, new PokeType[] { PokeType.ELECTRIC, PokeType.STEEL });
 		assertEquals(magneton.gender, 3);
 		assertEquals(magneton.baseStats.get(Stat.HP), (Integer) 50);
 		assertEquals(magneton.baseStats.get(Stat.ATK), (Integer) 60);
@@ -24,7 +24,7 @@ class PokedexTest {
 		assertEquals(magneton.baseStats.get(Stat.SPA), (Integer) 120);
 		assertEquals(magneton.baseStats.get(Stat.SPD), (Integer) 70);
 		assertEquals(magneton.baseStats.get(Stat.SPE), (Integer) 70);
-		assertArrayEquals(magneton.abilities, new String[] {"Magnet Pull", "Sturdy", "Analytic"});
+		assertArrayEquals(magneton.abilities, new String[] { "Magnet Pull", "Sturdy", "Analytic" });
 		assertEquals(magneton.height, 1.0);
 		assertEquals(magneton.weight, 60.0);
 	}

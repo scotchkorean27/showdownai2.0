@@ -10,8 +10,9 @@ public class DamageEvent extends GameEvent {
 	public final int damage;
 	public final Effectiveness effectiveness;
 	public final boolean damageispercentage;
-	
-	public DamageEvent(BattlePokemon victim, boolean hit, boolean iscrit, Effectiveness effectiveness, int damage, boolean damageispercentage) {
+
+	public DamageEvent(BattlePokemon victim, boolean hit, boolean iscrit, Effectiveness effectiveness, int damage,
+			boolean damageispercentage) {
 		this.victim = victim;
 		this.hit = hit;
 		this.iscrit = iscrit;
@@ -19,8 +20,8 @@ public class DamageEvent extends GameEvent {
 		this.damage = damage;
 		this.damageispercentage = damageispercentage;
 	}
-	
+
 	public static DamageEvent miss(BattlePokemon target) {
-		return new DamageEvent(target, false, false, null, 0,  false);
+		return new DamageEvent(target, false, false, null, 0, false);
 	}
 }

@@ -10,9 +10,9 @@ import pokemonai.constants.Stat;
 
 // Dat boilerplate tho
 public class UnmodifiableStatMap implements Map<Stat, Integer> {
-	
+
 	private final Map<Stat, Integer> statMap;
-	
+
 	public UnmodifiableStatMap(Map<Stat, Integer> statMap) {
 		this.statMap = Collections.unmodifiableMap(new HashMap<>(statMap));
 	}

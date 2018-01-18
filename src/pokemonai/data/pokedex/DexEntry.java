@@ -11,7 +11,7 @@ import pokemonai.constants.Stat;
 import pokemonai.teambuild.UnmodifiableStatMap;
 
 public final class DexEntry {
-	
+
 	public final int num;
 	public final String species;
 	public final PokeType[] types;
@@ -21,32 +21,26 @@ public final class DexEntry {
 	public final String[] abilities;
 	public final double height;
 	public final double weight;
-	
+
 	// TODO: Add a provision for maxHP (Shedinja)
 	public DexEntry(JSONObject dexJSON) {
-		this.num = ((Long)dexJSON.get("num")).intValue();
+		this.num = ((Long) dexJSON.get("num")).intValue();
 		this.species = (String) dexJSON.get("species");
 		Object[] types = ((JSONArray) dexJSON.get("types")).toArray();
-		this.types = Arrays.stream(Arrays.copyOf(types, types.length, String[].class))
-				.map(String::toUpperCase)
-				.map(PokeType::valueOf)
-				.toArray(PokeType[]::new);
+		this.types = Arrays.stream(Arrays.copyOf(types, types.length, String[].class)).map(String::toUpperCase)
+				.map(PokeType::valueOf).toArray(PokeType[]::new);
 		if (dexJSON.containsKey("genderRatio")) {
 			this.gender = 0;
-		}
-		else if (dexJSON.containsKey("gender")) {
+		} else if (dexJSON.containsKey("gender")) {
 			String gender = (String) dexJSON.get("gender");
 			if (gender.equals("M")) {
 				this.gender = 1;
-			}
-			else if (gender.equals("F")) {
+			} else if (gender.equals("F")) {
 				this.gender = 2;
-			}
-			else {
+			} else {
 				this.gender = 3;
 			}
-		}
-		else {
+		} else {
 			this.gender = 0;
 		}
 		HashMap<Stat, Integer> statMap = new HashMap<>();
@@ -61,7 +55,5 @@ public final class DexEntry {
 		this.height = ((Number) dexJSON.get("heightm")).doubleValue();
 		this.weight = ((Number) dexJSON.get("weightkg")).doubleValue();
 	}
-	
-	
-	
+
 }

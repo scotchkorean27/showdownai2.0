@@ -12,12 +12,12 @@ class TypeChartTest {
 	void shouldReturnSuperEffective() {
 		assertEquals(TypeChart.getMultiplier(PokeType.FIRE, PokeType.GRASS), 2);
 	}
-	
+
 	@Test
 	void shouldReturnNotVeryEffective() {
 		assertEquals(TypeChart.getMultiplier(PokeType.FAIRY, PokeType.STEEL), 0.5);
 	}
-	
+
 	@Test
 	void shouldReturnImmune() {
 		assertEquals(TypeChart.getMultiplier(PokeType.POISON, PokeType.STEEL), 0);

@@ -32,7 +32,8 @@ public class BuildPokemonTest {
 		evs.put(Stat.SPA, 48);
 		evs.put(Stat.SPD, 84);
 		evs.put(Stat.SPE, 23);
-		BuildPokemon garchompbuild = new BuildPokemon(garchompdex, 78, new MoveSet(), Nature.ADAMANT, ivs, evs, Optional.empty());
+		BuildPokemon garchompbuild = new BuildPokemon(garchompdex, 78, new MoveSet(), Nature.ADAMANT, ivs, evs,
+				Optional.empty());
 		assertEquals(garchompbuild.getStat(Stat.HP).intValue(), 289);
 		assertEquals(garchompbuild.getStat(Stat.ATK).intValue(), 278);
 		assertEquals(garchompbuild.getStat(Stat.DEF).intValue(), 193);

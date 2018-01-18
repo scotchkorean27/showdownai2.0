@@ -7,7 +7,7 @@ public class Tackle extends Move {
 	public int baseDamage() {
 		return 40;
 	}
-	
+
 	@Override
 	public int basePP() {
 		return 35;
@@ -28,5 +28,4 @@ public class Tackle extends Move {
 		return 100;
 	}
 
-	
 }

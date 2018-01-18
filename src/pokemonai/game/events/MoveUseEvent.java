@@ -7,7 +7,7 @@ public class MoveUseEvent extends GameEvent {
 	public final Move move;
 	public final BattlePokemon user;
 	public final BattlePokemon target;
-	
+
 	public MoveUseEvent(BattlePokemon user, BattlePokemon target, Move move) {
 		this.move = move;
 		this.user = user;
