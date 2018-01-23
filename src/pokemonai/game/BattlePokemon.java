@@ -1,31 +1,43 @@
 package pokemonai.game;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import pokemonai.constants.BattleStat;
 import pokemonai.constants.Stat;
 import pokemonai.teambuild.BuildPokemon;
 
 public class BattlePokemon {
+	// The fact that this reference can change drives me insane
 	public BuildPokemon basePokemon;
-	public HashMap<Stat, Integer> boosts = new HashMap<>();
-	public HashMap<BattleStat, Integer> secondaryBoosts = new HashMap<>();
+	public final Map<Stat, Integer> boosts;
+	public final Map<BattleStat, Integer> secondaryBoosts;
+	public final Set<BattleMove> moves;
 	public int hp;
 	public final int side;
 	public final int id;
 
-	public BattlePokemon(BuildPokemon basePokemon, int side) {
+	public BattlePokemon(BuildPokemon basePokemon, int side, int id) {
 		this.basePokemon = basePokemon;
-		this.hp = this.basePokemon.getStat(Stat.HP);
-		this.id = 0;
-		this.side = side;
-	}
-
-	public BattlePokemon(BuildPokemon basePokemon, int id, int side) {
-		this.basePokemon = basePokemon;
+		this.boosts = new HashMap<>();
+		this.secondaryBoosts = new HashMap<>();
+		this.moves = new HashSet<>();
 		this.hp = this.basePokemon.getStat(Stat.HP);
 		this.id = id;
 		this.side = side;
+	}
+
+	public BattlePokemon(BattlePokemon original) {
+		this.basePokemon = original.basePokemon;
+		this.boosts = new HashMap<>(original.boosts);
+		this.secondaryBoosts = new HashMap<>(original.secondaryBoosts);
+		this.moves = original.moves.stream().map(item -> new BattleMove(item)).collect(Collectors.toSet());
+		this.hp = original.hp;
+		this.side = original.side;
+		this.id = original.id;
 	}
 
 	public double getStatMult(Stat stat) {

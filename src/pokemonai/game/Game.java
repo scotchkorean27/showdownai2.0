@@ -20,19 +20,20 @@ public class Game {
 
 	}
 
-	public ArrayList<GameEvent> useMove(BattlePokemon user, BattlePokemon target, Move move) {
+	public ArrayList<GameEvent> useMove(BattlePokemon user, BattlePokemon target, BattleMove move) {
 		ArrayList<GameEvent> eventChain = new ArrayList<>();
-		eventChain.add(new MoveUseEvent(user, target, move));
-		if (!move.category().equals(MoveCategory.STATUS)) {
+		eventChain.add(new MoveUseEvent(user, target, move.baseMove));
+		move.pp--;
+		if (!move.baseMove.category().equals(MoveCategory.STATUS)) {
 			// TODO: Some moves and effects will modify accuracy. We need to implement this.
-			double totalacc = (double) move.accuracy() * user.getStatMult(BattleStat.ACCURACY)
+			double totalacc = (double) move.baseMove.accuracy() * user.getStatMult(BattleStat.ACCURACY)
 					/ target.getStatMult(BattleStat.EVASION);
 			if (new Random().nextDouble() <= totalacc) {
 				// TODO: Things will modify this. We need to implement this
 				boolean crit = new Random().nextDouble() <= user.getStatMult(BattleStat.CRITICALHIT);
-				DamageEvent damageEvent = this.getDamage(user, target, move, crit);
+				DamageResult damageEvent = this.getDamage(user, target, move.baseMove, crit);
 				target.hp -= damageEvent.damage;
-				eventChain.add(damageEvent);
+				eventChain.add(damageEvent.event);
 			} else {
 				eventChain.add(DamageEvent.miss(target));
 			}
@@ -42,7 +43,8 @@ public class Game {
 		return eventChain;
 	}
 
-	public DamageEvent getDamage(BattlePokemon attacker, BattlePokemon defender, Move move, boolean isCrit) {
+	public DamageResult getDamage(BattlePokemon attacker, BattlePokemon defender, Move move,
+			boolean isCrit) {
 		Random rand = new Random();
 		return getModifiedDamage(attacker, defender, move, isCrit, rand);
 	}
@@ -57,7 +59,8 @@ public class Game {
 	 * STAB: Implemented* Adaptability will require modification of this code Type:
 	 * Implemented Burn: Add when statuses are added Other: Add as needed
 	 */
-	public DamageEvent getModifiedDamage(BattlePokemon attacker, BattlePokemon defender, Move move, boolean isCrit,
+	public DamageResult getModifiedDamage(BattlePokemon attacker, BattlePokemon defender, Move move,
+			boolean isCrit,
 			Random rand) {
 		int damage = (int) (Math.floor(getBaseDamage(attacker, defender, move, isCrit)) * (isCrit ? 1.5 : 1.0)
 				* (((double) (rand.nextInt(16) + 85)) / 100));
@@ -66,8 +69,8 @@ public class Game {
 				* (defender.basePokemon.dexData.types.length > 1
 						? TypeChart.getMultiplier(move.type(), defender.basePokemon.dexData.types[1])
 						: 1.0);
-		return new DamageEvent(defender, true, isCrit, Effectiveness.getEffectiveness(typemult),
-				(int) (damage * stab * typemult), false);
+		return new DamageResult(new DamageEvent(defender, true, isCrit, Effectiveness.getEffectiveness(typemult),
+				(int) (damage * stab * typemult)), (int) (damage * stab * typemult));
 	}
 
 	// TODO: Figure out how to process base damage modifiers (Acrobatics, etc.)
