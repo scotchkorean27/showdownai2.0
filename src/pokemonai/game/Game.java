@@ -2,8 +2,12 @@ package pokemonai.game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
+import pokemonai.agent.Agent;
 import pokemonai.constants.BattleStat;
 import pokemonai.constants.Effectiveness;
 import pokemonai.constants.MoveCategory;
@@ -13,11 +17,81 @@ import pokemonai.data.moves.Move;
 import pokemonai.game.events.DamageEvent;
 import pokemonai.game.events.GameEvent;
 import pokemonai.game.events.MoveUseEvent;
+import pokemonai.game.phase.BlockingPhase;
+import pokemonai.game.phase.GamePhase;
+import pokemonai.game.phase.NonBlockingPhase;
+import pokemonai.game.phase.PhaseName;
+import pokemonai.teambuild.BuildPokemon;
 
 public class Game {
 
-	public Game() {
+	public List<Side> sides;
+	public List<Agent> agents;
+	public Deque<GamePhase> gameQueue;
 
+	public Game() {
+		this.sides = new ArrayList<>();
+		this.agents = new ArrayList<>();
+		this.gameQueue = new LinkedList<>();
+	};
+
+	public Game(Player p1, Player p2) {
+		this.sides = new ArrayList<>();
+		this.agents = new ArrayList<>();
+		this.gameQueue = new LinkedList<>();
+
+		int pid = 0;
+		ArrayList<BattlePokemon> team1 = new ArrayList<>();
+		for (BuildPokemon buildpoke : p1.team) {
+			team1.add(new FullPokemon(buildpoke, 0, pid));
+			pid++;
+		}
+		this.sides.add(new Side(team1, 0));
+		this.agents.add(p1.agent);
+
+		ArrayList<BattlePokemon> team2 = new ArrayList<>();
+		for (BuildPokemon buildpoke : p2.team) {
+			team2.add(new FullPokemon(buildpoke, 1, pid));
+			pid++;
+		}
+		this.sides.add(new Side(team2, 1));
+		this.agents.add(p2.agent);
+	}
+
+	public void SetupSingleTurn() {
+		this.gameQueue.addLast(new BlockingPhase(PhaseName.DECISION));
+		this.gameQueue.addLast(new NonBlockingPhase(PhaseName.SWITCH));
+		this.gameQueue.addLast(new NonBlockingPhase(PhaseName.MOVE));
+		this.gameQueue.addLast(new NonBlockingPhase(PhaseName.RESIDUAL));
+	}
+
+	// TODO: Implement this
+	public Decision[] decisionPhase() {
+		return null;
+	}
+
+	public Decision getDecisionFromSide() {
+		return null;
+	}
+
+	// TODO: Implement this
+	public void switchPhase() {
+
+	}
+
+	// TODO: Implement this
+	public void movePhase() {
+
+	}
+
+	// TODO: Implement this
+	public void residualPhase() {
+
+	}
+
+	// TODO: Clone and obfuscate
+	public Game obfuscateAndClone(int side) {
+		return null;
 	}
 
 	public ArrayList<GameEvent> useMove(BattlePokemon user, BattlePokemon target, BattleMove move) {
@@ -32,8 +106,9 @@ public class Game {
 				// TODO: Things will modify this. We need to implement this
 				boolean crit = new Random().nextDouble() <= user.getStatMult(BattleStat.CRITICALHIT);
 				DamageResult damageEvent = this.getDamage(user, target, move.baseMove, crit);
-				target.hp -= damageEvent.damage;
+				target.damage(damageEvent.damage);
 				eventChain.add(damageEvent.event);
+				// TODO: Add recoil
 			} else {
 				eventChain.add(DamageEvent.miss(target));
 			}
@@ -64,11 +139,13 @@ public class Game {
 			Random rand) {
 		int damage = (int) (Math.floor(getBaseDamage(attacker, defender, move, isCrit)) * (isCrit ? 1.5 : 1.0)
 				* (((double) (rand.nextInt(16) + 85)) / 100));
-		double stab = (Arrays.asList(attacker.basePokemon.dexData.types).contains(move.type()) ? 1.5 : 1.0);
-		double typemult = TypeChart.getMultiplier(move.type(), defender.basePokemon.dexData.types[0])
-				* (defender.basePokemon.dexData.types.length > 1
-						? TypeChart.getMultiplier(move.type(), defender.basePokemon.dexData.types[1])
-						: 1.0);
+		double stab = (Arrays.asList(attacker.getDexData().types).contains(move.type()) ? 1.5 : 1.0);
+		double typemult = !move.type().equals(null)
+				? TypeChart.getMultiplier(move.type(), defender.getDexData().types[0])
+						* (defender.getDexData().types.length > 1
+								? TypeChart.getMultiplier(move.type(), defender.getDexData().types[1])
+								: 1.0)
+				: 1.0;
 		return new DamageResult(new DamageEvent(defender, true, isCrit, Effectiveness.getEffectiveness(typemult),
 				(int) (damage * stab * typemult)), (int) (damage * stab * typemult));
 	}
@@ -81,10 +158,10 @@ public class Game {
 			attackingStat = Stat.SPA;
 			defendingStat = Stat.SPD;
 		}
-		return ((((2 * attacker.basePokemon.level / 5) + 2) * move.baseDamage()
-				* Math.floor(attacker.basePokemon.getStat(attackingStat)
+		return ((((2 * attacker.getLevel() / 5) + 2) * move.baseDamage()
+				* Math.floor(attacker.getStat(attackingStat)
 						* (isCrit && attacker.getStatMult(attackingStat) < 1 ? 1 : attacker.getStatMult(attackingStat)))
-				/ Math.floor(defender.basePokemon.getStat(defendingStat)
+				/ Math.floor(defender.getStat(defendingStat)
 						* (isCrit && defender.getStatMult(defendingStat) > 1 ? 1
 								: defender.getStatMult(defendingStat))))
 				/ 50) + 2;

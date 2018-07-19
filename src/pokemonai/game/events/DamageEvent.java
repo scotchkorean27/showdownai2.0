@@ -18,7 +18,7 @@ public class DamageEvent extends GameEvent {
 		this.hit = hit;
 		this.iscrit = iscrit;
 		this.effectiveness = effectiveness;
-		this.damage = (double) damage / victim.basePokemon.getStat(Stat.HP);
+		this.damage = (double) damage / victim.getStat(Stat.HP);
 	}
 
 	public static DamageEvent miss(BattlePokemon target) {

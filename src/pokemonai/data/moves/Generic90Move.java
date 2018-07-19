@@ -37,4 +37,9 @@ public class Generic90Move extends Move {
 	public int accuracy() {
 		return 100;
 	}
+
+	@Override
+	public String name() {
+		return "Generic" + this.type.toString() + this.category.toString();
+	}
 }

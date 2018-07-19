@@ -8,6 +8,7 @@ public class MasterMoveMap {
 	static {
 		masterMoveMap = new HashMap<String, Move>();
 		masterMoveMap.put("tackle", new Tackle());
+		masterMoveMap.put("struggle", new Struggle());
 	}
 
 	public static Move getMove(String movename) {
