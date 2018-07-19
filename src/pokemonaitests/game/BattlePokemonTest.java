@@ -18,7 +18,7 @@ import pokemonai.data.pokedex.DexEntry;
 import pokemonai.data.pokedex.MoveSet;
 import pokemonai.data.pokedex.Pokedex;
 import pokemonai.game.BattleMove;
-import pokemonai.game.BattlePokemon;
+import pokemonai.game.FullPokemon;
 import pokemonai.teambuild.BuildPokemon;
 
 public class BattlePokemonTest {
@@ -27,7 +27,7 @@ public class BattlePokemonTest {
 		DexEntry garchompdex = Pokedex.getDexEntry("garchomp");
 		BuildPokemon garchompbuild = new BuildPokemon(garchompdex, 78, new MoveSet(), Nature.ADAMANT,
 				new HashMap<Stat, Integer>(), new HashMap<Stat, Integer>(), Optional.empty());
-		BattlePokemon garchompbattle = new BattlePokemon(garchompbuild, 0, 0);
+		FullPokemon garchompbattle = new FullPokemon(garchompbuild, 0, 0);
 		assertEquals(garchompbattle.getStatMult(Stat.ATK), (double) 1);
 		assertEquals(garchompbattle.getStatMult(BattleStat.ACCURACY), (double) 1);
 	}
@@ -37,7 +37,7 @@ public class BattlePokemonTest {
 		DexEntry garchompdex = Pokedex.getDexEntry("garchomp");
 		BuildPokemon garchompbuild = new BuildPokemon(garchompdex, 78, new MoveSet(), Nature.ADAMANT,
 				new HashMap<Stat, Integer>(), new HashMap<Stat, Integer>(), Optional.empty());
-		BattlePokemon garchompbattle = new BattlePokemon(garchompbuild, 0, 0);
+		FullPokemon garchompbattle = new FullPokemon(garchompbuild, 0, 0);
 		garchompbattle.boost(Stat.ATK, 1);
 		assertEquals(garchompbattle.getStatMult(Stat.ATK), (double) 1.5);
 		garchompbattle.boost(Stat.ATK, 1);
@@ -57,7 +57,7 @@ public class BattlePokemonTest {
 		DexEntry garchompdex = Pokedex.getDexEntry("garchomp");
 		BuildPokemon garchompbuild = new BuildPokemon(garchompdex, 78, new MoveSet(), Nature.ADAMANT,
 				new HashMap<Stat, Integer>(), new HashMap<Stat, Integer>(), Optional.empty());
-		BattlePokemon garchompbattle = new BattlePokemon(garchompbuild, 0, 0);
+		FullPokemon garchompbattle = new FullPokemon(garchompbuild, 0, 0);
 		garchompbattle.unboost(Stat.ATK, 1);
 		assertEquals(garchompbattle.getStatMult(Stat.ATK), (double) 2 / 3);
 		garchompbattle.unboost(Stat.ATK, 1);
@@ -77,7 +77,7 @@ public class BattlePokemonTest {
 		DexEntry garchompdex = Pokedex.getDexEntry("garchomp");
 		BuildPokemon garchompbuild = new BuildPokemon(garchompdex, 78, new MoveSet(), Nature.ADAMANT,
 				new HashMap<Stat, Integer>(), new HashMap<Stat, Integer>(), Optional.empty());
-		BattlePokemon garchompbattle = new BattlePokemon(garchompbuild, 0, 0);
+		FullPokemon garchompbattle = new FullPokemon(garchompbuild, 0, 0);
 		garchompbattle.unboost(Stat.ATK, 7);
 		assertEquals(garchompbattle.getStatMult(Stat.ATK), (double) 2 / 8);
 	}
@@ -87,7 +87,7 @@ public class BattlePokemonTest {
 		DexEntry garchompdex = Pokedex.getDexEntry("garchomp");
 		BuildPokemon garchompbuild = new BuildPokemon(garchompdex, 78, new MoveSet(), Nature.ADAMANT,
 				new HashMap<Stat, Integer>(), new HashMap<Stat, Integer>(), Optional.empty());
-		BattlePokemon garchompbattle = new BattlePokemon(garchompbuild, 0, 0);
+		FullPokemon garchompbattle = new FullPokemon(garchompbuild, 0, 0);
 		garchompbattle.boost(BattleStat.ACCURACY, 1);
 		assertEquals(garchompbattle.getStatMult(BattleStat.ACCURACY), (double) 4 / 3);
 		garchompbattle.boost(BattleStat.ACCURACY, 1);
@@ -107,7 +107,7 @@ public class BattlePokemonTest {
 		DexEntry garchompdex = Pokedex.getDexEntry("garchomp");
 		BuildPokemon garchompbuild = new BuildPokemon(garchompdex, 78, new MoveSet(), Nature.ADAMANT,
 				new HashMap<Stat, Integer>(), new HashMap<Stat, Integer>(), Optional.empty());
-		BattlePokemon garchompbattle = new BattlePokemon(garchompbuild, 0, 0);
+		FullPokemon garchompbattle = new FullPokemon(garchompbuild, 0, 0);
 		garchompbattle.unboost(BattleStat.ACCURACY, 1);
 		assertEquals(garchompbattle.getStatMult(BattleStat.ACCURACY), (double) 3 / 4);
 		garchompbattle.unboost(BattleStat.ACCURACY, 1);
@@ -127,11 +127,11 @@ public class BattlePokemonTest {
 		DexEntry garchompdex = Pokedex.getDexEntry("garchomp");
 		BuildPokemon garchompbuild = new BuildPokemon(garchompdex, 78, new MoveSet(), Nature.ADAMANT,
 				new HashMap<Stat, Integer>(), new HashMap<Stat, Integer>(), Optional.empty());
-		BattlePokemon garchompbattle = new BattlePokemon(garchompbuild, 0, 0);
+		FullPokemon garchompbattle = new FullPokemon(garchompbuild, 0, 0);
 		garchompbattle.unboost(BattleStat.ACCURACY, 1);
 		garchompbattle.unboost(Stat.ATK, 1);
 		garchompbattle.moves.add(new BattleMove(new Generic90Move(PokeType.FAIRY, MoveCategory.SPECIAL)));
-		BattlePokemon garchompclone = new BattlePokemon(garchompbattle);
+		FullPokemon garchompclone = (FullPokemon) garchompbattle.deepCopy();
 		assertEquals(garchompbattle.basePokemon, garchompclone.basePokemon);
 		assertEquals(garchompbattle.boosts, garchompclone.boosts);
 		assertNotSame(garchompbattle.boosts, garchompclone.boosts);
@@ -143,7 +143,7 @@ public class BattlePokemonTest {
 		assertEquals(originalMove.baseMove, clonedMove.baseMove);
 		assertEquals(originalMove.pp, clonedMove.pp);
 		assertNotSame(originalMove, clonedMove);
-		assertEquals(garchompbattle.hp, garchompclone.hp);
+		assertEquals(garchompbattle.getHp(), garchompclone.getHp());
 		assertEquals(garchompbattle.side, garchompclone.side);
 		assertEquals(garchompbattle.id, garchompclone.id);
 	}
