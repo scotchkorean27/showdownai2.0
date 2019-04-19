@@ -3,12 +3,12 @@ package pokemonai.data.pokedex;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import com.google.common.collect.ImmutableMap;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import pokemonai.constants.PokeType;
 import pokemonai.constants.Stat;
-import pokemonai.teambuild.UnmodifiableStatMap;
 
 public final class DexEntry {
 
@@ -17,7 +17,7 @@ public final class DexEntry {
 	public final PokeType[] types;
 	// 0 MF, 1 M, 2 F, 3 N
 	public final int gender;
-	public final UnmodifiableStatMap baseStats;
+	public final ImmutableMap<Stat, Integer> baseStats;
 	public final String[] abilities;
 	public final double height;
 	public final double weight;
@@ -49,7 +49,7 @@ public final class DexEntry {
 			String statname = ((String) s).toUpperCase();
 			statMap.put(Stat.valueOf(statname), ((Long) baseStats.get(s)).intValue());
 		}
-		this.baseStats = new UnmodifiableStatMap(statMap);
+		this.baseStats = ImmutableMap.copyOf(statMap);
 		Object[] abilities = ((JSONObject) dexJSON.get("abilities")).values().toArray();
 		this.abilities = Arrays.copyOf(abilities, abilities.length, String[].class);
 		this.height = ((Number) dexJSON.get("heightm")).doubleValue();
