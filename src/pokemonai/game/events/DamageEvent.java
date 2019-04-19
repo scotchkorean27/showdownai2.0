@@ -11,17 +11,20 @@ public class DamageEvent extends GameEvent {
 	public final boolean iscrit;
 	public final double damage;
 	public final Effectiveness effectiveness;
+	private final EventType eventType;
 
-	public DamageEvent(BattlePokemon victim, boolean hit, boolean iscrit, Effectiveness effectiveness, int damage) {
+	public DamageEvent(BattlePokemon victim, boolean hit, boolean iscrit, Effectiveness effectiveness, int damage, EventType eventType) {
 		// Contains the victim's data BEFORE the damage event.
 		this.victim = new EventPokemon(victim);
 		this.hit = hit;
 		this.iscrit = iscrit;
 		this.effectiveness = effectiveness;
 		this.damage = (double) damage / victim.getStat(Stat.HP);
+		this.eventType = eventType;
 	}
 
-	public static DamageEvent miss(BattlePokemon target) {
-		return new DamageEvent(target, false, false, null, 0);
+	@Override
+	public EventType eventType() {
+		return eventType;
 	}
 }

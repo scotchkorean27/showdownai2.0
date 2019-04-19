@@ -16,6 +16,7 @@ import pokemonai.constants.TypeChart;
 import pokemonai.data.moves.Move;
 import pokemonai.game.events.DamageEvent;
 import pokemonai.game.events.GameEvent;
+import pokemonai.game.events.MissEvent;
 import pokemonai.game.events.MoveUseEvent;
 import pokemonai.game.phase.BlockingPhase;
 import pokemonai.game.phase.GamePhase;
@@ -33,7 +34,7 @@ public class Game {
 		this.sides = new ArrayList<>();
 		this.agents = new ArrayList<>();
 		this.gameQueue = new LinkedList<>();
-	};
+	}
 
 	public Game(Player p1, Player p2) {
 		this.sides = new ArrayList<>();
@@ -108,9 +109,32 @@ public class Game {
 				DamageResult damageEvent = this.getDamage(user, target, move.baseMove, crit);
 				target.damage(damageEvent.damage);
 				eventChain.add(damageEvent.event);
-				// TODO: Add recoil
+				if (move.baseMove.maxHpRecoil().isPresent()) {
+					int recoilDamage = (int) (user.getMaxHp() * move.baseMove.maxHpRecoil().get());
+					user.damage(recoilDamage);
+          eventChain.add(
+              new DamageEvent(
+                  user,
+                  true,
+                  false,
+                  Effectiveness.NORMAL,
+                  recoilDamage,
+                  GameEvent.EventType.RECOIL));
+				}
+				if (move.baseMove.recoil().isPresent()) {
+					int recoilDamage = (int) (damageEvent.damage * move.baseMove.recoil().get());
+					user.damage(recoilDamage);
+          eventChain.add(
+              new DamageEvent(
+                  user,
+                  true,
+                  false,
+                  Effectiveness.NORMAL,
+                  recoilDamage,
+                  GameEvent.EventType.RECOIL));
+				}
 			} else {
-				eventChain.add(DamageEvent.miss(target));
+				eventChain.add(new MissEvent(target));
 			}
 		} else {
 			// TODO: Status moves will likely kill me
@@ -140,14 +164,14 @@ public class Game {
 		int damage = (int) (Math.floor(getBaseDamage(attacker, defender, move, isCrit)) * (isCrit ? 1.5 : 1.0)
 				* (((double) (rand.nextInt(16) + 85)) / 100));
 		double stab = (Arrays.asList(attacker.getDexData().types).contains(move.type()) ? 1.5 : 1.0);
-		double typemult = !move.type().equals(null)
+		double typemult = move.type() != null
 				? TypeChart.getMultiplier(move.type(), defender.getDexData().types[0])
 						* (defender.getDexData().types.length > 1
 								? TypeChart.getMultiplier(move.type(), defender.getDexData().types[1])
 								: 1.0)
 				: 1.0;
 		return new DamageResult(new DamageEvent(defender, true, isCrit, Effectiveness.getEffectiveness(typemult),
-				(int) (damage * stab * typemult)), (int) (damage * stab * typemult));
+				(int) (damage * stab * typemult), GameEvent.EventType.DAMAGE), (int) (damage * stab * typemult));
 	}
 
 	// TODO: Figure out how to process base damage modifiers (Acrobatics, etc.)

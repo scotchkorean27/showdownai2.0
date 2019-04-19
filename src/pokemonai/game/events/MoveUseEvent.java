@@ -14,4 +14,9 @@ public class MoveUseEvent extends GameEvent {
 		this.user = new EventPokemon(user);
 		this.target = new EventPokemon(target);
 	}
+
+	@Override
+	public EventType eventType() {
+		return EventType.MOVEUSED;
+	}
 }

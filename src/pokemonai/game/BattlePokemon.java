@@ -5,33 +5,33 @@ import pokemonai.constants.Stat;
 import pokemonai.data.pokedex.DexEntry;
 
 public interface BattlePokemon {
-	public int getId();
+	int getId();
 
-	public int getSide();
+	int getSide();
 
-	public double getStatMult(Stat stat);
+	double getStatMult(Stat stat);
 
-	public double getStatMult(BattleStat stat);
+	double getStatMult(BattleStat stat);
 
-	public void boost(Stat stat, int boostamt);
+	void boost(Stat stat, int boostamt);
 
-	public void boost(BattleStat stat, int boostamt);
+	void boost(BattleStat stat, int boostamt);
 
-	public void unboost(Stat stat, int boostamt);
+	void unboost(Stat stat, int boostamt);
 
-	public void unboost(BattleStat stat, int boostamt);
+	void unboost(BattleStat stat, int boostamt);
 
-	public int getHp();
+	int getHp();
 
-	public int getMaxHp();
+	int getMaxHp();
 
-	public void damage(int damage);
+	void damage(int damage);
 
-	public int getStat(Stat stat);
+	int getStat(Stat stat);
 
-	public int getLevel();
+	int getLevel();
 
-	public DexEntry getDexData();
+	DexEntry getDexData();
 
-	public BattlePokemon deepCopy();
+	BattlePokemon deepCopy();
 }

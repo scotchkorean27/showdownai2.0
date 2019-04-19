@@ -24,7 +24,7 @@ public class Struggle extends Move {
 
 	@Override
 	public MoveCategory category() {
-		return null;
+		return MoveCategory.PHYSICAL;
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class Struggle extends Move {
 	}
 
 	@Override
-	public Optional<Double> recoil() {
+	public Optional<Double> maxHpRecoil() {
 		return Optional.of(0.25);
 	}
 

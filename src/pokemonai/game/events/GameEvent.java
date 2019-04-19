@@ -1,5 +1,9 @@
 package pokemonai.game.events;
 
-public class GameEvent {
+public abstract class GameEvent {
+    public abstract EventType eventType();
 
+    public enum EventType {
+        MOVEUSED, DAMAGE, RECOIL, MISS
+    }
 }
